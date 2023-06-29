@@ -26,16 +26,16 @@ let operate = () => {
   if (previousNumber && currentOperator && currentNumber) {
     switch (currentOperator) {
       case "+":
-        previousNumber = parseFloat(add(previousNumber, currentNumber).toFixed(3));
+        previousNumber = add(previousNumber, currentNumber);
         break;
       case "-":
-        previousNumber = parseFloat(subtract(previousNumber, currentNumber).toFixed(3));
+        previousNumber = subtract(previousNumber, currentNumber);
         break;
       case "×":
-        previousNumber = parseFloat(multiply(previousNumber, currentNumber).toFixed(3));
+        previousNumber = multiply(previousNumber, currentNumber);
         break;
       case "÷":
-        previousNumber = parseFloat(divide(previousNumber, currentNumber).toFixed(3));
+        previousNumber = divide(previousNumber, currentNumber);
         break;
     }
   } else {
@@ -44,14 +44,14 @@ let operate = () => {
 };
 
 function updateDisplay() {
-  inputDisplay.textContent = previousNumber;
+    inputDisplay.textContent = previousNumber;
 }
 
 function displayNumber() {
   if (currentOperator) {
     currentNumber = parseFloat(this.textContent);
     operate();
-    inputPreview.textContent = previousNumber;
+    inputPreview.textContent = previousNumber
   }
 
   inputDisplay.textContent += this.textContent;
@@ -60,8 +60,11 @@ function displayNumber() {
 function displayOperator() {
   if (!currentOperator) {
     previousNumber = parseFloat(inputDisplay.textContent[0]);
-  }
-
+    } 
+// else  {
+//   operate()
+//   inputPreview.textContent = previousNumber;
+// }
   currentOperator = this.textContent;
 
   inputDisplay.textContent += this.textContent;
@@ -71,8 +74,7 @@ function displayOperator() {
 // function displayDecimal() {
 //     currentNumber.toString()
 //     currentNumber += ".";
-//     inputDisplay.textContent[inputDisplay.textContent.length - 1] = currentNumber;
-//     console.log(currentNumber);
+//     currentNumber = parseFloat(current)
 // }
 
 function clearDisplay() {
@@ -98,7 +100,7 @@ clearButton.addEventListener("click", clearDisplay);
 // backButton.addEventListener("click");
 
 equalButton.addEventListener("click", function () {
-  updateDisplay();
+    updateDisplay();
 });
 
 // decimalButton.addEventListener("click", displayDecimal)
