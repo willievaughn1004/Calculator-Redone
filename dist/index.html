@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Javascript -->
+    <script src="./script.js" defer></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./css/styles.css" />
+    <!-- Font Awesome Links -->
+    <script
+      src="https://kit.fontawesome.com/28f50c9793.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Calculator</title>
+  </head>
+  <body>
+    <div class="calculator">
+      <section class="display">
+        <p class="input"></p>
+        <p class="input-preview"></p>
+      </section>
+      <section class="buttons">
+        <button class="button light-grey" id="ac">AC</button>
+        <button class="button light-grey" id="sign">+/-</button>
+        <button class="button operator light-grey" id="divide">÷</button>
+        <button class="button orange" id="back">
+          <i class="fa-sharp fa-solid fa-delete-left"></i>
+        </button>
+
+        <button class="button number" data-num="7" id="7">7</button>
+        <button class="button number" data-num="8" id="8">8</button>
+        <button class="button number" data-num="9" id="9">9</button>
+        <button class="button operator orange" id="multiply">×</button>
+
+        <button class="button number" data-num="4" id="4">4</button>
+        <button class="button number" data-num="5" id="5">5</button>
+        <button class="button number" data-num="6" id="6">6</button>
+        <button class="button operator orange" id="minus">-</button>
+
+        <button class="button number" data-num="1" id="1">1</button>
+        <button class="button number" data-num="2" id="2">2</button>
+        <button class="button number" data-num="3" id="3">3</button>
+        <button class="button operator orange" id="plus">+</button>
+
+        <button class="button number" data-num="0" id="zero">0</button>
+        <button class="button decimal" id="decimal-point">.</button>
+        <button class="button orange" id="equal">=</button>
+      </section>
+    </div>
+  </body>
+</html>
