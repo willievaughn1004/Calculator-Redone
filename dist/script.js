@@ -13,6 +13,7 @@ const signReverseButton = document.querySelector("#sign");
 let previousNumber;
 let currentOperator = "";
 let operatorCheck = false;
+let decimalCheck = false;
 let currentNumber;
 
 // Functions
@@ -103,11 +104,19 @@ function displayOperator() {
   currentOperator = this.textContent;
   inputDisplay.textContent += currentOperator;
   operatorCheck = true;
+  decimalCheck = false;
 }
 
 function displayDecimal() {
-  currentNumber.toString();
+  if (inputDisplay.textContent === "" || operatorCheck || decimalCheck) {
+    return;
+  }
+
+  console.log(currentNumber);
   currentNumber += ".";
+  inputDisplay.textContent += ".";
+  decimalCheck = true;
+  console.log(currentNumber);
 }
 
 function clearDisplay() {
@@ -115,6 +124,7 @@ function clearDisplay() {
   currentOperator = "";
   currentNumber = undefined;
   operatorCheck = false;
+  decimalCheck = false;
   inputPreview.textContent = "";
   inputDisplay.textContent = "";
 }
