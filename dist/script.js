@@ -17,7 +17,7 @@ let currentNumber;
 
 // Functions
 
-let add = (a, b) => a + b;
+let add = (a, b) => parseFloat(a) + parseFloat(b);
 let subtract = (a, b) => a - b;
 let multiply = (a, b) => a * b;
 let divide = (a, b) => a / b;
@@ -66,7 +66,7 @@ function updateDisplay() {
     return;
   }
 
-  currentNumber = parseFloat(inputPreview.textContent);
+  currentNumber = inputPreview.textContent;
   previousNumber = undefined;
 
   inputDisplay.textContent = currentNumber;
@@ -75,11 +75,10 @@ function updateDisplay() {
 
 function displayNumber() {
   if (!currentNumber) {
-    currentNumber = parseFloat(this.textContent);
+    currentNumber = this.textContent;
   } else {
-    currentNumber = currentNumber.toString();
     currentNumber += this.textContent;
-    currentNumber = parseFloat(currentNumber);
+    currentNumber = currentNumber;
   }
 
   inputDisplay.textContent += this.textContent;
@@ -94,7 +93,7 @@ function displayOperator() {
   }
 
   if (previousNumber || previousNumber === 0) {
-    previousNumber = parseFloat(inputPreview.textContent);
+    previousNumber = inputPreview.textContent;
     currentNumber = undefined;
   } else {
     previousNumber = currentNumber;
@@ -106,11 +105,10 @@ function displayOperator() {
   operatorCheck = true;
 }
 
-// function displayDecimal() {
-//     currentNumber.toString()
-//     currentNumber += ".";
-//     currentNumber = parseFloat(current)
-// }
+function displayDecimal() {
+  currentNumber.toString();
+  currentNumber += ".";
+}
 
 function clearDisplay() {
   previousNumber = undefined;
@@ -137,4 +135,4 @@ clearButton.addEventListener("click", clearDisplay);
 
 equalButton.addEventListener("click", updateDisplay);
 
-// decimalButton.addEventListener("click", displayDecimal)
+decimalButton.addEventListener("click", displayDecimal);
