@@ -10,9 +10,10 @@ const equalButton = document.querySelector("#equal");
 const decimalButton = document.querySelector(".decimal");
 const signReverseButton = document.querySelector("#sign");
 
-let previousNumber = 0;
+let previousNumber;
 let currentOperator = "";
-let currentNumber = 0;
+let operatorCheck = false;
+let currentNumber;
 
 // Functions
 
@@ -22,20 +23,37 @@ let multiply = (a, b) => a * b;
 let divide = (a, b) => a / b;
 
 let operate = () => {
-  console.log(previousNumber, currentOperator, currentNumber);
-  if (previousNumber && currentOperator && currentNumber) {
+  if (currentNumber === 0 && currentOperator === "÷") {
+    alert("You can't divide by Zero!");
+    clearDisplay();
+    return;
+  }
+
+  if (
+    (previousNumber || previousNumber === 0) &&
+    currentOperator &&
+    currentNumber
+  ) {
     switch (currentOperator) {
       case "+":
-        previousNumber = add(previousNumber, currentNumber);
+        inputPreview.textContent = parseFloat(
+          add(previousNumber, currentNumber).toFixed(3)
+        );
         break;
       case "-":
-        previousNumber = subtract(previousNumber, currentNumber);
+        inputPreview.textContent = parseFloat(
+          subtract(previousNumber, currentNumber).toFixed(3)
+        );
         break;
       case "×":
-        previousNumber = multiply(previousNumber, currentNumber);
+        inputPreview.textContent = parseFloat(
+          multiply(previousNumber, currentNumber).toFixed(3)
+        );
         break;
       case "÷":
-        previousNumber = divide(previousNumber, currentNumber);
+        inputPreview.textContent = parseFloat(
+          divide(previousNumber, currentNumber).toFixed(3)
+        );
         break;
     }
   } else {
@@ -44,31 +62,48 @@ let operate = () => {
 };
 
 function updateDisplay() {
-    inputDisplay.textContent = previousNumber;
+  if (!inputDisplay.textContent || operatorCheck) {
+    return;
+  }
+
+  currentNumber = parseFloat(inputPreview.textContent);
+  previousNumber = undefined;
+
+  inputDisplay.textContent = currentNumber;
+  inputPreview.textContent = "";
 }
 
 function displayNumber() {
-  if (currentOperator) {
+  if (!currentNumber) {
     currentNumber = parseFloat(this.textContent);
-    operate();
-    inputPreview.textContent = previousNumber
+  } else {
+    currentNumber = currentNumber.toString();
+    currentNumber += this.textContent;
+    currentNumber = parseFloat(currentNumber);
   }
 
   inputDisplay.textContent += this.textContent;
+  operatorCheck = false;
+
+  operate();
 }
 
 function displayOperator() {
-  if (!currentOperator) {
-    previousNumber = parseFloat(inputDisplay.textContent[0]);
-    } 
-// else  {
-//   operate()
-//   inputPreview.textContent = previousNumber;
-// }
-  currentOperator = this.textContent;
+  if (inputDisplay.textContent === "" || operatorCheck) {
+    return;
+  }
 
-  inputDisplay.textContent += this.textContent;
-  console.log(inputDisplay.textContent[inputDisplay.textContent.length - 2]);
+  if (previousNumber || previousNumber === 0) {
+    previousNumber = parseFloat(inputPreview.textContent);
+    currentNumber = undefined;
+  } else {
+    previousNumber = currentNumber;
+    currentNumber = undefined;
+  }
+
+  currentOperator = this.textContent;
+  inputDisplay.textContent += currentOperator;
+  operatorCheck = true;
 }
 
 // function displayDecimal() {
@@ -78,9 +113,10 @@ function displayOperator() {
 // }
 
 function clearDisplay() {
-  previousNumber = 0;
+  previousNumber = undefined;
   currentOperator = "";
-  currentNumber = 0;
+  currentNumber = undefined;
+  operatorCheck = false;
   inputPreview.textContent = "";
   inputDisplay.textContent = "";
 }
@@ -99,8 +135,6 @@ clearButton.addEventListener("click", clearDisplay);
 
 // backButton.addEventListener("click");
 
-equalButton.addEventListener("click", function () {
-    updateDisplay();
-});
+equalButton.addEventListener("click", updateDisplay);
 
 // decimalButton.addEventListener("click", displayDecimal)
