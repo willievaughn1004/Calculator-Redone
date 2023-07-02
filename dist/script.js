@@ -124,12 +124,18 @@ function deleteInput() {
     return;
   }
 
-  // if (decimalCheck){
+  let currentNumberArr = currentNumber.toString().split("");
 
-  // }
+  if (currentNumberArr[currentNumberArr.length - 1] === ".") {
+    decimalCheck = false;
+    currentNumberArr.splice(currentNumberArr.length - 1, 1);
+    currentNumber = currentNumberArr.join("");
+    inputHistory[inputHistory.length - 1] = currentNumber;
+    updateDisplay();
+    return;
+  }
 
   if (Math.abs(currentNumber).toString().length > 1) {
-    currentNumberArr = currentNumber.toString().split("");
     currentNumberArr.splice(currentNumberArr.length - 1, 1);
     currentNumber = currentNumberArr.join("");
     inputHistory[inputHistory.length - 1] = currentNumber;
@@ -138,7 +144,6 @@ function deleteInput() {
     operatorCheck = true;
     currentNumber = undefined;
   }
-
 
   updateDisplay();
 }
@@ -162,3 +167,6 @@ decimalButton.addEventListener("click", displayDecimal);
 backButton.addEventListener("click", deleteInput);
 
 signReverseButton.addEventListener("click", reverseSign);
+
+
+// Need to fix it so you can't place operator after dot. Also overall checking up, make sure it's all good
