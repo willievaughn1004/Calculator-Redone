@@ -171,7 +171,7 @@ operatorButtons.forEach((button) =>
 
 clearButton.addEventListener("click", clearDisplay);
 
-// backButton.addEventListener("click", deleteLastNumber);
+backButton.addEventListener("click", deleteLastNumber);
 
 equalButton.addEventListener("click", updateDisplay);
 
