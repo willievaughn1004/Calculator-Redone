@@ -1,6 +1,7 @@
 // Variables
 
 const inputDisplay = document.querySelector(".input");
+// const inputPreview = document.querySelector(".input-preview");
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const clearButton = document.querySelector("#ac");
@@ -36,13 +37,25 @@ let operate = () => {
   ) {
     switch (currentOperator) {
       case "+":
-        return parseFloat(add(previousNumber, currentNumber).toFixed(3));
+        currentNumber = parseFloat(
+          add(previousNumber, currentNumber).toFixed(3)
+        );
+        break;
       case "-":
-        return parseFloat(subtract(previousNumber, currentNumber).toFixed(3));
+        currentNumber = parseFloat(
+          subtract(previousNumber, currentNumber).toFixed(3)
+        );
+        break;
       case "×":
-        return parseFloat(multiply(previousNumber, currentNumber).toFixed(3));
+        currentNumber = parseFloat(
+          multiply(previousNumber, currentNumber).toFixed(3)
+        );
+        break;
       case "÷":
-        return parseFloat(divide(previousNumber, currentNumber).toFixed(3));
+        currentNumber = parseFloat(
+          divide(previousNumber, currentNumber).toFixed(3)
+        );
+        break;
     }
   } else {
     return;
@@ -55,9 +68,10 @@ function updateDisplay() {
   if (!inputDisplay.textContent || operatorCheck) {
     return;
   }
-  currentNumber = operate();
-  inputDisplay.textContent = currentNumber;
+
   previousNumber = undefined;
+
+  inputDisplay.textContent = currentNumber;
 }
 
 function displayNumber() {
@@ -65,10 +79,13 @@ function displayNumber() {
     currentNumber = this.textContent;
   } else {
     currentNumber += this.textContent;
+    currentNumber = currentNumber;
   }
 
   inputDisplay.textContent += this.textContent;
   operatorCheck = false;
+
+  operate();
 }
 
 function displayOperator() {
@@ -77,7 +94,7 @@ function displayOperator() {
   }
 
   if (previousNumber || previousNumber === 0) {
-    previousNumber = operate();
+    previousNumber = inputDisplay.textContent;
     currentNumber = undefined;
   } else {
     previousNumber = currentNumber;
@@ -106,8 +123,41 @@ function clearDisplay() {
   currentNumber = undefined;
   operatorCheck = false;
   decimalCheck = false;
+  // inputPreview.textContent = "";
   inputDisplay.textContent = "";
 }
+
+// function reverseSign() {
+//   let inputText = inputDisplay.textContent.split("");
+//   console.log(inputText);
+//   inputText.splice(inputText.length - 1, 1);
+//   inputDisplay.textContent = inputText.join("");
+// }
+
+//   let currentNumberSplit = currentNumber.split("");
+//   currentNumberSplit.splice(currentNumberSplit.length - 1, 1);
+//   currentNumber = currentNumberSplit.join("");
+
+//   operate();
+// }
+
+// function deleteLastNumber() {
+
+//   let inputText = inputDisplay.textContent.split("");
+//   inputText.splice(inputText.length - 1, 1);
+//   inputDisplay.textContent = inputText.join("");
+
+//   if (operatorCheck) {
+//     operatorCheck = false;
+//     currentOperator = "";
+//   }
+
+//   let currentNumberSplit = currentNumber.split("");
+//   currentNumberSplit.splice(currentNumberSplit.length - 1, 1)
+//   currentNumber = currentNumberSplit.join("")
+
+//   operate();
+// }
 
 // Event Listeners
 
@@ -121,6 +171,10 @@ operatorButtons.forEach((button) =>
 
 clearButton.addEventListener("click", clearDisplay);
 
+// backButton.addEventListener("click", deleteLastNumber);
+
 equalButton.addEventListener("click", updateDisplay);
 
 decimalButton.addEventListener("click", displayDecimal);
+
+// signReverseButton.addEventListener("click", reverseSign);
