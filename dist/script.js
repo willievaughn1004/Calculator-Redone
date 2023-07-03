@@ -1,6 +1,7 @@
 // Variables
 
 const inputDisplay = document.querySelector(".input");
+const inputPreview = document.querySelector(".input-preview");
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const clearButton = document.querySelector("#ac");
@@ -55,16 +56,27 @@ let operate = () => {
     }
   }
 
+  return parseFloat(sum.toFixed(3));
+};
+
+function equalButtonPress() {
+  currentNumber = operate();
+
   operatorCheck = false;
 
-  if (/\.+/gi.test(sum)) {
+  if (/\.+/gi.test(currentNumber)) {
     decimalCheck = true;
   }
 
-  currentNumber = parseFloat(sum.toFixed(3));
   inputHistory = [currentNumber];
   updateDisplay();
-};
+}
+
+function updateDisplay() {
+  let newDisplay = inputHistory.map((input) => input.toString()); // original code
+  inputDisplay.textContent = newDisplay.join(""); // original code
+  inputPreview.textContent = operate();
+}
 
 function displayNumber() {
   if (!currentNumber) {
@@ -77,19 +89,10 @@ function displayNumber() {
 
   operatorCheck = false;
   updateDisplay();
-  // if (decimalCheck) {
-
-  //   inputDisplay.textContent += "."
-  // }
-}
-
-function updateDisplay() {
-  let newDisplay = inputHistory.map((input) => input.toString());
-  inputDisplay.textContent = newDisplay.join("");
 }
 
 function displayOperator() {
-if (
+  if (
     inputDisplay.textContent[inputDisplay.textContent.length - 1] === "." ||
     inputHistory.length === 0 ||
     operatorCheck
@@ -174,7 +177,7 @@ operatorButtons.forEach((button) =>
 
 clearButton.addEventListener("click", clearDisplay);
 
-equalButton.addEventListener("click", operate);
+equalButton.addEventListener("click", equalButtonPress);
 
 decimalButton.addEventListener("click", displayDecimal);
 
