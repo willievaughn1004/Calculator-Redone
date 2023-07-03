@@ -22,11 +22,6 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
-function updateDisplay() {
-  let newDisplay = inputHistory.map((input) => input.toString());
-  inputDisplay.textContent = newDisplay.join("");
-}
-
 let operate = () => {
   if (
     parseFloat(currentNumber) === 0 &&
@@ -61,6 +56,11 @@ let operate = () => {
   }
 
   operatorCheck = false;
+
+  if (/\.+/gi.test(sum)) {
+    decimalCheck = true;
+  }
+
   currentNumber = parseFloat(sum.toFixed(3));
   inputHistory = [currentNumber];
   updateDisplay();
@@ -77,10 +77,23 @@ function displayNumber() {
 
   operatorCheck = false;
   updateDisplay();
+  // if (decimalCheck) {
+
+  //   inputDisplay.textContent += "."
+  // }
+}
+
+function updateDisplay() {
+  let newDisplay = inputHistory.map((input) => input.toString());
+  inputDisplay.textContent = newDisplay.join("");
 }
 
 function displayOperator() {
-  if (inputHistory.length === 0 || operatorCheck) {
+if (
+    inputDisplay.textContent[inputDisplay.textContent.length - 1] === "." ||
+    inputHistory.length === 0 ||
+    operatorCheck
+  ) {
     return;
   }
 
@@ -97,6 +110,7 @@ function displayDecimal() {
   }
 
   currentNumber += ".";
+  updateDisplay();
   inputDisplay.textContent += ".";
   decimalCheck = true;
 }
@@ -167,6 +181,5 @@ decimalButton.addEventListener("click", displayDecimal);
 backButton.addEventListener("click", deleteInput);
 
 signReverseButton.addEventListener("click", reverseSign);
-
 
 // Need to fix it so you can't place operator after dot. Also overall checking up, make sure it's all good
