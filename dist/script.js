@@ -15,6 +15,7 @@ let decimalCheck = false;
 let currentNumber;
 
 let inputHistory = [];
+let zerosInDisplay = undefined;
 
 // Functions
 
@@ -73,8 +74,8 @@ function equalButtonPress() {
 }
 
 function updateDisplay() {
-  let newDisplay = inputHistory.map((input) => input.toString()); // original code
-  inputDisplay.textContent = newDisplay.join(""); // original code
+  let newDisplay = inputHistory.map((input) => input.toString());
+  inputDisplay.textContent = newDisplay.join("");
   inputPreview.textContent = operate();
 }
 
@@ -89,6 +90,19 @@ function displayNumber() {
 
   operatorCheck = false;
   updateDisplay();
+
+  // this code is attempting to register when there is a comma so that it can add zeros to the display.
+  //main issues is zeros after commas
+  if (/\./.test(currentNumber) && this.textContent === "0") {
+    if (/\.0/.test(currentNumber) && this.textContent === "0") {
+      zerosInDisplay += "0";
+    } else {
+      zerosInDisplay = ".0";
+    }
+
+    inputDisplay.textContent += zerosInDisplay;
+    return;
+  }
 }
 
 function displayOperator() {
@@ -184,5 +198,3 @@ decimalButton.addEventListener("click", displayDecimal);
 backButton.addEventListener("click", deleteInput);
 
 signReverseButton.addEventListener("click", reverseSign);
-
-// Need to fix it so you can't place operator after dot. Also overall checking up, make sure it's all good
