@@ -34,25 +34,25 @@ let operate = () => {
     return;
   }
 
-  if (inputHistory.length < 3 || operatorCheck) {
+  if (inputHistory.length < 3) {
     return;
   }
 
-  let sum = inputHistory[0];
+  let sum = parseFloat(inputHistory[0]);
 
   for (let i = 1; i < inputHistory.length - 1; i++) {
     switch (inputHistory[i]) {
       case "+":
-        sum = add(sum, inputHistory[i + 1]);
+        sum = add(sum, parseFloat(inputHistory[i + 1]));
         break;
       case "-":
-        sum = subtract(sum, inputHistory[i + 1]);
+        sum = subtract(sum, parseFloat(inputHistory[i + 1]));
         break;
       case "×":
-        sum = multiply(sum, inputHistory[i + 1]);
+        sum = multiply(sum, parseFloat(inputHistory[i + 1]));
         break;
       case "÷":
-        sum = divide(sum, inputHistory[i + 1]);
+        sum = divide(sum, parseFloat(inputHistory[i + 1]));
         break;
     }
   }
@@ -60,10 +60,13 @@ let operate = () => {
   return parseFloat(sum.toFixed(3));
 };
 
+// fix bug when you press equal that it clears screen when it isn't supposed to.
 function equalButtonPress() {
-  currentNumber = operate();
+  if (operatorCheck) {
+    return;
+  }
 
-  operatorCheck = false;
+  currentNumber = operate();
 
   if (/\.+/gi.test(currentNumber)) {
     decimalCheck = true;
@@ -74,35 +77,24 @@ function equalButtonPress() {
 }
 
 function updateDisplay() {
-  let newDisplay = inputHistory.map((input) => input.toString());
-  inputDisplay.textContent = newDisplay.join("");
+  if (!operatorCheck) {
+    inputHistory[inputHistory.length - 1] = currentNumber;
+  }
+  inputDisplay.textContent = inputHistory.join("");
   inputPreview.textContent = operate();
 }
 
 function displayNumber() {
   if (!currentNumber) {
     currentNumber = this.textContent;
-    inputHistory.push(parseFloat(currentNumber));
+    inputHistory.push(currentNumber);
   } else {
     currentNumber += this.textContent;
-    inputHistory[inputHistory.length - 1] = parseFloat(currentNumber);
+    inputHistory[inputHistory.length - 1] = currentNumber;
   }
 
   operatorCheck = false;
   updateDisplay();
-
-  // this code is attempting to register when there is a comma so that it can add zeros to the display.
-  //main issues is zeros after commas
-  if (/\./.test(currentNumber) && this.textContent === "0") {
-    if (/\.0/.test(currentNumber) && this.textContent === "0") {
-      zerosInDisplay += "0";
-    } else {
-      zerosInDisplay = ".0";
-    }
-
-    inputDisplay.textContent += zerosInDisplay;
-    return;
-  }
 }
 
 function displayOperator() {
@@ -116,9 +108,9 @@ function displayOperator() {
 
   inputHistory.push(this.textContent);
   currentNumber = undefined;
-  updateDisplay();
   operatorCheck = true;
   decimalCheck = false;
+  updateDisplay();
 }
 
 function displayDecimal() {
@@ -127,9 +119,8 @@ function displayDecimal() {
   }
 
   currentNumber += ".";
-  updateDisplay();
-  inputDisplay.textContent += ".";
   decimalCheck = true;
+  updateDisplay();
 }
 
 function clearDisplay() {
@@ -142,10 +133,12 @@ function clearDisplay() {
 
 function reverseSign() {
   currentNumber *= -1;
+  currentNumber = currentNumber.toString();
   inputHistory[inputHistory.length - 1] = currentNumber;
   updateDisplay();
 }
 
+// fix error where if you delete number you also delete the operator after it.
 function deleteInput() {
   if (operatorCheck) {
     inputHistory.splice(inputHistory.length - 1, 1);
@@ -155,7 +148,7 @@ function deleteInput() {
     return;
   }
 
-  let currentNumberArr = currentNumber.toString().split("");
+  let currentNumberArr = currentNumber.split("");
 
   if (currentNumberArr[currentNumberArr.length - 1] === ".") {
     decimalCheck = false;
@@ -166,7 +159,7 @@ function deleteInput() {
     return;
   }
 
-  if (Math.abs(currentNumber).toString().length > 1) {
+  if (Math.abs(currentNumber).toString.length > 1 || /\./.test(currentNumber)) {
     currentNumberArr.splice(currentNumberArr.length - 1, 1);
     currentNumber = currentNumberArr.join("");
     inputHistory[inputHistory.length - 1] = currentNumber;
