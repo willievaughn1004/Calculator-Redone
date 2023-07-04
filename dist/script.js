@@ -152,7 +152,7 @@ function toggleSign() {
 function handleDelete() {
   // Checks if operator is last input
   if (operatorCheck) {
-    inputHistory.splice(inputHistory.length - 1, 1);
+    inputHistory.pop();
     operatorCheck = false;
     currentNumber = inputHistory[inputHistory.length - 1];
     updateDisplay();
@@ -164,7 +164,7 @@ function handleDelete() {
   // Checks if decimal is last input
   if (currentNumberArr[currentNumberArr.length - 1] === ".") {
     decimalCheck = false;
-    currentNumberArr.splice(currentNumberArr.length - 1, 1);
+    currentNumberArr.pop();
     currentNumber = currentNumberArr.join("");
     inputHistory[inputHistory.length - 1] = currentNumber;
     updateDisplay();
@@ -176,11 +176,11 @@ function handleDelete() {
     Math.abs(currentNumber).toString().length > 1 ||
     /\./.test(currentNumber)
   ) {
-    currentNumberArr.splice(currentNumberArr.length - 1, 1);
+    currentNumberArr.pop();
     currentNumber = currentNumberArr.join("");
     inputHistory[inputHistory.length - 1] = currentNumber;
   } else {
-    inputHistory.splice(inputHistory.length - 1, 1);
+    inputHistory.pop();
     operatorCheck = true;
     currentNumber = undefined;
   }
