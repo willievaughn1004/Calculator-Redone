@@ -13,7 +13,6 @@ const signReverseButton = document.querySelector("#sign");
 let operatorCheck = false;
 let decimalCheck = false;
 let currentNumber;
-
 let inputHistory = [];
 
 // Functions
