@@ -23,7 +23,7 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
-// change the divide by zero error to only occur if the user hits enter and doesn't mess up preview text.
+// Returns the sum of the elements within inputHistory
 function operate() {
   if (inputHistory.length < 3) {
     return;
@@ -31,6 +31,7 @@ function operate() {
 
   let sum = parseFloat(inputHistory[0]);
 
+  // Iterate through the input history and perform the appropriate operation
   for (let i = 1; i < inputHistory.length - 1; i++) {
     switch (inputHistory[i]) {
       case "+":
@@ -51,7 +52,9 @@ function operate() {
   return parseFloat(sum.toFixed(3));
 }
 
-function equalButtonPress() {
+// Takes the result of operate, adds it to the display, and removes inputPreview.
+function performCalculation() {
+  // check for divide by zero error
   if (
     parseFloat(currentNumber) === 0 &&
     inputHistory[inputHistory.length - 2] === "÷"
@@ -67,6 +70,7 @@ function equalButtonPress() {
 
   currentNumber = operate().toString();
 
+  // Check if result has decimal point
   if (/\.+/gi.test(currentNumber)) {
     decimalCheck = true;
   }
@@ -75,6 +79,7 @@ function equalButtonPress() {
   updateDisplay();
 }
 
+// Updates the display with the current input history and result
 function updateDisplay() {
   if (!operatorCheck) {
     inputHistory[inputHistory.length - 1] = currentNumber;
@@ -83,6 +88,7 @@ function updateDisplay() {
   inputPreview.textContent = operate();
 }
 
+// Handles displaying numbers when number buttons are clicked
 function displayNumber() {
   if (!currentNumber) {
     currentNumber = this.textContent;
@@ -96,7 +102,9 @@ function displayNumber() {
   updateDisplay();
 }
 
+// Handles displaying operators when operator buttons are clicked
 function displayOperator() {
+  // Checks if inputDisplay and inputHistory is empty and if there is already an operator
   if (
     inputDisplay.textContent[inputDisplay.textContent.length - 1] === "." ||
     inputHistory.length === 0 ||
@@ -112,7 +120,9 @@ function displayOperator() {
   updateDisplay();
 }
 
+// Handles displaying decimals when the decimal buttons is clicked
 function displayDecimal() {
+  // Checks if inputDisplay empty, if there is already an operator, and if there is already a decimal.
   if (inputDisplay.textContent === "" || operatorCheck || decimalCheck) {
     return;
   }
@@ -122,6 +132,7 @@ function displayDecimal() {
   updateDisplay();
 }
 
+// Resets everything
 function clearDisplay() {
   currentNumber = undefined;
   operatorCheck = false;
@@ -130,6 +141,7 @@ function clearDisplay() {
   updateDisplay();
 }
 
+// Toggles the sign of the current number
 function toggleSign() {
   currentNumber *= -1;
   currentNumber = currentNumber.toString();
@@ -137,7 +149,9 @@ function toggleSign() {
   updateDisplay();
 }
 
+// Deletes the last input
 function handleDelete() {
+  // Checks if operator is last input
   if (operatorCheck) {
     inputHistory.splice(inputHistory.length - 1, 1);
     operatorCheck = false;
@@ -148,6 +162,7 @@ function handleDelete() {
 
   let currentNumberArr = currentNumber.split("");
 
+  // Checks if decimal is last input
   if (currentNumberArr[currentNumberArr.length - 1] === ".") {
     decimalCheck = false;
     currentNumberArr.splice(currentNumberArr.length - 1, 1);
@@ -157,6 +172,7 @@ function handleDelete() {
     return;
   }
 
+  // Checks if current number has more than one digit or not.
   if (
     Math.abs(currentNumber).toString().length > 1 ||
     /\./.test(currentNumber)
@@ -185,7 +201,7 @@ operatorButtons.forEach((button) =>
 
 clearButton.addEventListener("click", clearDisplay);
 
-equalButton.addEventListener("click", equalButtonPress);
+equalButton.addEventListener("click", performCalculation);
 
 decimalButton.addEventListener("click", displayDecimal);
 
