@@ -142,6 +142,9 @@ function clearDisplay() {
 
 // Toggles the sign of the current number
 function toggleSign() {
+  if (!currentNumber) {
+    return;
+  }
   currentNumber *= -1;
   currentNumber = currentNumber.toString();
   inputHistory[inputHistory.length - 1] = currentNumber;
