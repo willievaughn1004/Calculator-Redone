@@ -56,8 +56,8 @@ function equalButtonPress() {
     parseFloat(currentNumber) === 0 &&
     inputHistory[inputHistory.length - 2] === "÷"
   ) {
-    alert("You can't divide by zero!");
     clearDisplay();
+    inputDisplay.textContent = "You can't divide by zero!";
     return;
   }
 
@@ -130,14 +130,14 @@ function clearDisplay() {
   updateDisplay();
 }
 
-function reverseSign() {
+function toggleSign() {
   currentNumber *= -1;
   currentNumber = currentNumber.toString();
   inputHistory[inputHistory.length - 1] = currentNumber;
   updateDisplay();
 }
 
-function deleteInput() {
+function handleDelete() {
   if (operatorCheck) {
     inputHistory.splice(inputHistory.length - 1, 1);
     operatorCheck = false;
@@ -146,7 +146,6 @@ function deleteInput() {
     return;
   }
 
-  console.log(currentNumber);
   let currentNumberArr = currentNumber.split("");
 
   if (currentNumberArr[currentNumberArr.length - 1] === ".") {
@@ -190,6 +189,6 @@ equalButton.addEventListener("click", equalButtonPress);
 
 decimalButton.addEventListener("click", displayDecimal);
 
-backButton.addEventListener("click", deleteInput);
+backButton.addEventListener("click", handleDelete);
 
-signReverseButton.addEventListener("click", reverseSign);
+signReverseButton.addEventListener("click", toggleSign);
