@@ -24,7 +24,10 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
-let operate = () => {
+
+// change the divide by zero error to only occur if the user hits enter and doesn't mess up preview text.
+function operate() {
+
   if (
     parseFloat(currentNumber) === 0 &&
     inputHistory[inputHistory.length - 2] === "÷"
@@ -62,7 +65,8 @@ let operate = () => {
 
 // fix bug when you press equal that it clears screen when it isn't supposed to.
 function equalButtonPress() {
-  if (operatorCheck) {
+
+  if (operatorCheck || inputHistory.length < 3) {
     return;
   }
 
@@ -138,7 +142,6 @@ function reverseSign() {
   updateDisplay();
 }
 
-// fix error where if you delete number you also delete the operator after it.
 function deleteInput() {
   if (operatorCheck) {
     inputHistory.splice(inputHistory.length - 1, 1);
@@ -159,7 +162,7 @@ function deleteInput() {
     return;
   }
 
-  if (Math.abs(currentNumber).toString.length > 1 || /\./.test(currentNumber)) {
+  if (Math.abs(currentNumber).toString().length > 1 || /\./.test(currentNumber)) {
     currentNumberArr.splice(currentNumberArr.length - 1, 1);
     currentNumber = currentNumberArr.join("");
     inputHistory[inputHistory.length - 1] = currentNumber;
