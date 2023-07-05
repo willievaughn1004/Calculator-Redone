@@ -153,10 +153,9 @@ function toggleSign() {
 
 // Deletes the last input
 function handleDelete() {
-
   // Checks if display is empty
   if (inputDisplay.textContent === "") {
-    return
+    return;
   }
 
   // Checks if operator is last input
@@ -224,11 +223,9 @@ signReverseButton.addEventListener("click", toggleSign);
 // Keyboard accessibility
 
 document.addEventListener("keydown", (e) => {
-  console.log(inputHistory);
   if (e.key === "Enter") {
-    console.log(inputHistory);
+    e.preventDefault();
     performCalculation();
-    console.log(inputHistory);
   }
 
   if (/\d/.test(e.key)) {
@@ -250,5 +247,4 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Backspace") {
     handleDelete();
   }
-  console.log(inputHistory);
 });
