@@ -88,12 +88,12 @@ function updateDisplay() {
 }
 
 // Handles displaying numbers when number buttons are clicked
-function displayNumber() {
+function displayNumber(number) {
   if (!currentNumber) {
-    currentNumber = this.textContent;
+    currentNumber = number.textContent || number;
     inputHistory.push(currentNumber);
   } else {
-    currentNumber += this.textContent;
+    currentNumber += number.textContent || number;
     inputHistory[inputHistory.length - 1] = currentNumber;
   }
 
@@ -102,7 +102,7 @@ function displayNumber() {
 }
 
 // Handles displaying operators when operator buttons are clicked
-function displayOperator() {
+function displayOperator(operator) {
   // Checks if inputDisplay and inputHistory is empty and if there is already an operator
   if (
     inputDisplay.textContent[inputDisplay.textContent.length - 1] === "." ||
@@ -112,7 +112,7 @@ function displayOperator() {
     return;
   }
 
-  inputHistory.push(this.textContent);
+  inputHistory.push(operator.textContent || operator);
   currentNumber = undefined;
   operatorCheck = true;
   decimalCheck = false;
@@ -194,11 +194,15 @@ function handleDelete() {
 // Event Listeners
 
 numberButtons.forEach((button) =>
-  button.addEventListener("click", displayNumber)
+  button.addEventListener("click", function () {
+    displayNumber(this);
+  })
 );
 
 operatorButtons.forEach((button) =>
-  button.addEventListener("click", displayOperator)
+  button.addEventListener("click", function () {
+    displayOperator(this);
+  })
 );
 
 clearButton.addEventListener("click", clearDisplay);
@@ -210,3 +214,33 @@ decimalButton.addEventListener("click", displayDecimal);
 backButton.addEventListener("click", handleDelete);
 
 signReverseButton.addEventListener("click", toggleSign);
+
+// Keyboard accessibility
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    console.log(inputHistory);
+    performCalculation();
+    console.log(inputHistory);
+  }
+
+  if (/\d/.test(e.key)) {
+    displayNumber(e.key);
+  }
+
+  if (/\//.test(e.key)) {
+    displayOperator("÷");
+  }
+
+  if (/\*/.test(e.key)) {
+    displayOperator("×");
+  }
+
+  if (/[\×\÷\-\+]/.test(e.key)) {
+    displayOperator(e.key);
+  }
+5
+  if (e.key === "Backspace") {
+    handleDelete();
+  }
+});
